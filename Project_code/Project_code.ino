@@ -3,17 +3,15 @@
 Servo servo1;          // Initialise the servo object to control the servo
 Servo servo;
 
-const int pinAdc = A2;
-
 // Values for microphone
-int microphonePin = A2;
+int microphonePin = A2;   // Pin location for microphone
 int micValue;
 int val = 0;
 
 // Values for potentiometer
-int rotaryPin1 = A0; // select the input pin for the rotary
-int rotaryPin = 3;
-int rotaryValue = 0; // variable to store the value coming from the rotary
+int rotaryPin1 = A0;  // Pin location for rotarypin1
+int rotaryPin = 3;    // Pin location for rotarypin
+int rotaryValue = 0;   // variable to store the value coming from the rotary
 int rotaryValue1 = 0;
 int pMin = 0;
 int pMax = 180;
@@ -40,7 +38,6 @@ void loop() {
     } if (micValue > 566 && micValue < 750) {   // For high volume
       Serial.println("High Volume");
     }
-
 
     // Potentiometer values
     rotaryValue = analogRead(rotaryPin);      // sets the value for the horizontal motor
