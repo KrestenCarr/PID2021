@@ -1,10 +1,10 @@
 #include <Servo.h>    // Import the Servo library to control the servo
 
-Servo servo;          // Initialise the servo object to control the servo
-Servo servo1;
+Servo servo1;          // Initialise the servo object to control the servo
+Servo servo;
 
-int rotaryPin = A0; // select the input pin for the rotary
-int rotaryPin1 = 3;
+int rotaryPin1 = A0; // select the input pin for the rotary
+int rotaryPin = 3;
 int rotaryValue = 0; // variable to store the value coming from the rotary
 int rotaryValue1 = 0;
 int pMin = 0;
@@ -23,9 +23,9 @@ void loop() {
   rotaryValue = analogRead(rotaryPin);      // sets the value for the vertical motor
   rotaryValue1 = analogRead(rotaryPin1);    // Sets the value for the horizontal motor  
 
-  rotaryValue = constrain(rotaryValue, 0, 100);   // Uses constrain to keep its value
-  rotaryValue1 = constrain(rotaryValue1, 550, 1023);
+  rotaryValue = constrain(rotaryValue, 550, 1023);   // Uses constrain to keep its value
+  rotaryValue1 = constrain(rotaryValue1, 0, 150);
 
-  servo.write(rotaryValue1);  // Position for servo
-  servo1.write(rotaryValue);  // Set the position of the servo1
+  servo.write(rotaryValue);  // Position for servo
+  servo1.write(rotaryValue1);  // Set the position of the servo1
 }
