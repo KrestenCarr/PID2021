@@ -8,13 +8,24 @@ int microphonePin = A2;   // Pin location for microphone
 int micValue;
 int val = 0;
 
+// Values for low, mid and high microphone
+int lowestValue = 300;
+int mediumValue = 433;
+int highestValue = 566;
+
 // Values for potentiometer
 int rotaryPin1 = A0;  // Pin location for rotarypin1
 int rotaryPin = 3;    // Pin location for rotarypin
 int rotaryValue = 0;   // variable to store the value coming from the rotary
 int rotaryValue1 = 0;
+
+// Max/Min values for horizontal motor
 int pMin = 0;
-int pMax = 180;
+int pMax = 200;
+
+// Max/Min values for vertical motor
+int p1Min = 550;
+int p1Max = 1023;
 
 void setup() {
   Serial.begin(9600);
@@ -30,12 +41,12 @@ void loop() {
     micValue = analogRead(microphonePin);
 
     // Thresholds
-    if (micValue > 300) {    // For no detection
-    } if (micValue > 300 && micValue < 433) {   // For low volume
+    if (micValue > lowestValue) {    // For no detection
+    } if (micValue > lowestValue && micValue < mediumValue) {   // For low volume
       Serial.println("Low Volume");
-    } if (micValue > 433 && micValue < 566) {   // For medium volume
+    } if (micValue > mediumValue && micValue < highestValue) {   // For medium volume
       Serial.println("Medium Volume");
-    } if (micValue > 566 && micValue < 750) {   // For high volume
+    } if (micValue > highestValue) {   // For high volume
       Serial.println("High Volume");
     }
 
@@ -43,8 +54,8 @@ void loop() {
     rotaryValue = analogRead(rotaryPin);      // sets the value for the horizontal motor
     rotaryValue1 = analogRead(rotaryPin1);    // Sets the value for the vertical motor
 
-    rotaryValue = constrain(rotaryValue, 550, 1023);   // Horizontal constraints
-    rotaryValue1 = constrain(rotaryValue1, 0, 200);   // Vertical constraints
+    rotaryValue = constrain(rotaryValue, p1Min, p1Max);   // Horizontal constraints
+    rotaryValue1 = constrain(rotaryValue1, pMin, pMax);   // Vertical constraints
 
     // Potentiometer values -> rotary
     servo.write(rotaryValue);  // passes value for horizontal motor
