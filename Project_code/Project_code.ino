@@ -1,11 +1,17 @@
 #include <Servo.h>    // Import the Servo library to control the servo
 
-Servo servo;          // Initialise the servo object to control the servo
-Servo servo1;
+Servo servo1;          // Initialise the servo object to control the servo
+Servo servo;
 
-int rotaryPin = A0; // select the input pin for the rotary
-int rotaryPin1 = 3;
-int rotaryValue = 0; // variable to store the value coming from the rotary
+// Values for microphone
+int microphonePin = A2;   // Pin location for microphone
+int micValue;
+int val = 0;
+
+// Values for potentiometer
+int rotaryPin1 = A0;  // Pin location for rotarypin1
+int rotaryPin = 3;    // Pin location for rotarypin
+int rotaryValue = 0;   // variable to store the value coming from the rotary
 int rotaryValue1 = 0;
 int pMin = 0;
 int pMax = 180;
@@ -15,17 +21,32 @@ void setup() {
   servo.attach(3);    // Tell the servo object that we've connected to pin 3
   servo1.attach(2);   // Connectes the servo1 to pin 2
   delay(40);
+
+  pinMode(microphonePin, INPUT);
 }
 
 void loop() {
-  // read the value from the sensor:  
-  
-  rotaryValue = analogRead(rotaryPin);      // sets the value for the vertical motor
-  rotaryValue1 = analogRead(rotaryPin1);    // Sets the value for the horizontal motor  
+    // Microphone values
+    micValue = analogRead(microphonePin);
 
-  rotaryValue = constrain(rotaryValue, 0, 100);   // Uses constrain to keep its value
-  rotaryValue1 = constrain(rotaryValue1, 550, 1023);
+    // Thresholds
+    if (micValue > 300) {    // For no detection
+    } if (micValue > 300 && micValue < 433) {   // For low volume
+      Serial.println("Low Volume");
+    } if (micValue > 433 && micValue < 566) {   // For medium volume
+      Serial.println("Medium Volume");
+    } if (micValue > 566 && micValue < 750) {   // For high volume
+      Serial.println("High Volume");
+    }
 
-  servo.write(rotaryValue1);  // Position for servo
-  servo1.write(rotaryValue);  // Set the position of the servo1
+    // Potentiometer values
+    rotaryValue = analogRead(rotaryPin);      // sets the value for the horizontal motor
+    rotaryValue1 = analogRead(rotaryPin1);    // Sets the value for the vertical motor
+
+    rotaryValue = constrain(rotaryValue, 550, 1023);   // Horizontal constraints
+    rotaryValue1 = constrain(rotaryValue1, 0, 200);   // Vertical constraints
+
+    // Potentiometer values -> rotary
+    servo.write(rotaryValue);  // passes value for horizontal motor
+    servo1.write(rotaryValue1);  // passes value for vertical motor
 }
