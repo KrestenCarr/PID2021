@@ -48,6 +48,7 @@ void loop() {
       Serial.println("High Volume");
     }
 
+
     // Potentiometer values
     rotaryXVal = analogRead(rotaryPin);      // Reads value from rotary pins
     rotaryYVal = analogRead(rotaryPin1);   
