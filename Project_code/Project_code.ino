@@ -1,52 +1,62 @@
 #include <Servo.h>    // Import the Servo library to control the servo
 
-Servo servo1;          // Initialise the servo object to control the servo
-Servo servo;
+Servo x;
+Servo y;          // Initialise the servo object to control the servo
 
 // Values for microphone
 int microphonePin = A2;   // Pin location for microphone
 int micValue;
 int val = 0;
 
+// Values for low, mid and high microphone
+int lowestValue = 300;
+int mediumValue = 433;
+int highestValue = 566;
+
 // Values for potentiometer
-int rotaryPin1 = A0;  // Pin location for rotarypin1
-int rotaryPin = 3;    // Pin location for rotarypin
-int rotaryValue = 0;   // variable to store the value coming from the rotary
-int rotaryValue1 = 0;
-int pMin = 0;
-int pMax = 180;
+int rotaryPin = 3;  // Pin location for rotarypin1
+int rotaryPin1 = A0;    // Pin location for rotarypin
+int rotaryXVal = 0;   // variable to store the value coming from the rotary
+int rotaryYVal = 0;
+
+// Max/Min values for horizontal motor
+int yMin = 0;
+int yMax = 200;
+
+// Max/Min values for vertical motor
+int xMin = 550;
+int xMax = 1023;
 
 void setup() {
-  Serial.begin(9600);
-  servo.attach(3);    // Tell the servo object that we've connected to pin 3
-  servo1.attach(2);   // Connectes the servo1 to pin 2
-  delay(40);
-
+  x.attach(3);    // Tell the servo object that we've connected to pin 3
+  y.attach(2);   // Connectes the servo1 to pin 2
   pinMode(microphonePin, INPUT);
+  Serial.begin(9600);
 }
 
 void loop() {
     // Microphone values
     micValue = analogRead(microphonePin);
 
-    // Thresholds
-    if (micValue > 300) {    // For no detection
-    } if (micValue > 300 && micValue < 433) {   // For low volume
+    // Thresholds for microphone
+    if (micValue > lowestValue) {    // For no detection
+    } if (micValue > lowestValue && micValue < mediumValue) {   // For low volume
       Serial.println("Low Volume");
-    } if (micValue > 433 && micValue < 566) {   // For medium volume
+    } if (micValue > mediumValue && micValue < highestValue) {   // For medium volume
       Serial.println("Medium Volume");
-    } if (micValue > 566 && micValue < 750) {   // For high volume
+    } if (micValue > highestValue) {   // For high volume
       Serial.println("High Volume");
     }
 
-    // Potentiometer values
-    rotaryValue = analogRead(rotaryPin);      // sets the value for the horizontal motor
-    rotaryValue1 = analogRead(rotaryPin1);    // Sets the value for the vertical motor
 
-    rotaryValue = constrain(rotaryValue, 550, 1023);   // Horizontal constraints
-    rotaryValue1 = constrain(rotaryValue1, 0, 200);   // Vertical constraints
+    // Potentiometer values
+    rotaryXVal = analogRead(rotaryPin);      // Reads value from rotary pins
+    rotaryYVal = analogRead(rotaryPin1);   
+
+    rotaryXVal = constrain(rotaryXVal, xMin, xMax);   // Constraints for X and Y 
+    rotaryYVal = constrain(rotaryYVal, yMin, yMax);
 
     // Potentiometer values -> rotary
-    servo.write(rotaryValue);  // passes value for horizontal motor
-    servo1.write(rotaryValue1);  // passes value for vertical motor
+    x.write(rotaryXVal);  // passes value for horizontal motor
+    y.write(rotaryYVal);  // passes value for vertical motor
 }
