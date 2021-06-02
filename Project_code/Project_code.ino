@@ -104,14 +104,6 @@ void loop() {
     ySpeed *= -1;
   }
 
-  if (posX == 60) {
-    if (posY == ) {
-      
-    }
-  }
-
-  Serial.println(posY);
-
 
   /*
     while (true) {
