@@ -14,7 +14,7 @@ int servo4 = 5; //Digital PWM pin used by the servo 4
 // Values for microphone
 int microphonePin = A2;   // Pin location for microphone
 int micValue;
-int val = 0;
+float shoutVal;
 
 // Values for potentiometers
 int potentiometer1 = A6;
@@ -25,7 +25,7 @@ float rotaryValue2 = 90;  // Variables for potentiometer2
 
 // Values for low, mid and high microphone
 int lowestValue = 300;
-int mediumValue = 433;
+int mediumValue = 200;
 int highestValue = 566;
 
 float ySpeed = 0.01;
@@ -47,14 +47,12 @@ void setup() {
   myServo2.attach(servo2);
   myServo3.attach(servo3);
   myServo4.attach(servo4);
+
   pinMode(microphonePin, INPUT);
   Serial.begin(9600);
 }
 
 void loop() {
-  // Microphone values
-  micValue = analogRead(microphonePin);
-
   rotaryValue1 = analogRead(potentiometer1);
   rotaryValue2 = analogRead(potentiometer2);
 
@@ -66,27 +64,22 @@ void loop() {
     myServo2.write(rotaryValue2);   // Top: 77. Bottom: 109.
   }
 
-  //Serial.println(rotaryValue1);
-
   posX = posX + xSpeed;
   posY = posY + ySpeed;
   myServo3.write(posX);
   myServo4.write(posY);
 
-
   /*
     // Thresholds for microphone
     if (micValue > lowestValue) {    // For no detection
     } if (micValue > lowestValue && micValue < mediumValue) {   // For low volume
-      Serial.println("Low Volume");
+      shoutVal = 0.2;
     } if (micValue > mediumValue && micValue < highestValue) {   // For medium volume
-      Serial.println("Medium Volume");
+      shoutVal = 0.3;
     } if (micValue > highestValue) {   // For high volume
-      Serial.println("High Volume");
+      shoutVal = 0.4;
     }
-
   */
-
 
   if (posX > xMax) {
     xSpeed *= -1;
@@ -103,6 +96,57 @@ void loop() {
   if (posY < yMin) {
     ySpeed *= -1;
   }
+
+  if (posY > 57.5 && rotaryValue2 > 93 || posY < 57.5 && rotaryValue2 < 93) {
+    if (posX < 61 && posX > 60) {
+
+      micValue = analogRead(microphonePin);
+
+      xSpeed *= -1;
+
+      if (micValue < mediumValue) {
+        if (xSpeed > 0) {
+          xSpeed = 0.01;
+        } else {
+          xSpeed = -0.01;
+        }
+      } else if (micValue > mediumValue) {
+        if (xSpeed > 0) {
+          xSpeed = 0.05;
+        } else {
+          xSpeed = -0.05;
+        }
+      }
+    }
+  }
+
+  if (posY > 57.5 && rotaryValue1 > 58.5 || posY < 57.5 && rotaryValue1 < 58.5) {
+    if (posX < 8 && posX > 7) {
+
+      micValue = analogRead(microphonePin);
+
+      xSpeed *= -1;
+
+      if (micValue < mediumValue) {
+        if (xSpeed > 0) {
+          xSpeed = 0.01;
+        } else {
+          xSpeed = -0.01;
+        }
+      } else if (micValue > mediumValue) {
+        if (xSpeed > 0) {
+          xSpeed = 0.05;
+        } else {
+          xSpeed = -0.05;
+        }
+      }
+    }
+  }
+
+
+  //Serial.println(micValue);
+
+
 
 
   /*
