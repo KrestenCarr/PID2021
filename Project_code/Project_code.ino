@@ -69,18 +69,6 @@ void loop() {
   myServo3.write(posX);
   myServo4.write(posY);
 
-  /*
-    // Thresholds for microphone
-    if (micValue > lowestValue) {    // For no detection
-    } if (micValue > lowestValue && micValue < mediumValue) {   // For low volume
-      shoutVal = 0.2;
-    } if (micValue > mediumValue && micValue < highestValue) {   // For medium volume
-      shoutVal = 0.3;
-    } if (micValue > highestValue) {   // For high volume
-      shoutVal = 0.4;
-    }
-  */
-
   if (posX > xMax) {
     xSpeed *= -1;
   }
@@ -142,52 +130,4 @@ void loop() {
       }
     }
   }
-
-
-  //Serial.println(micValue);
-
-
-
-
-  /*
-    while (true) {
-      rotaryValue1 = analogRead(potentiometer2);
-      rotaryValue2 = analogRead(potentiometer1);
-
-      myServo3.write(rotaryValue1);   // Left player
-      myServo4.write(rotaryValue2);   // Right player
-    }
-  */
-
-  /*
-      for (posX = xMin; posX <= xMax; posX += xSpeed) { // goes from 0 degrees to 180 degrees
-      myServo3.write(posX);
-      posY += ySpeed;
-      myServo4.write(posY);
-      if (posY >= yMax) {
-        ySpeed *= -1;
-      }
-      if (posY <= yMin) {
-        posY = yMin;
-        ySpeed *= -1;
-      }
-      delay(15);                       // waits 15ms for the servo to reach the position
-      }
-
-
-      for (posX = xMax; posX >= xMin; posX -= xSpeed) { // goes from 180 degrees to 0 degrees
-      myServo3.write(posX);              // tell servo to go to position in variable 'pos'
-      myServo4.write(posY);
-      posY -= ySpeed;
-      if (posY >= yMax) {
-        ySpeed *= -1;
-      }
-      if (posY <= yMin) {
-        posY = yMin;
-        ySpeed *= -1;
-      }
-      delay(15);                       // waits 15ms for the servo to reach the position
-      }
-  */
-
 }
